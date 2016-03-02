@@ -29,7 +29,7 @@ public class MongoDbActions implements IMongoDbActions {
 
 	@Override
 	public MongoDbClient getClient(com.services.spotify.extension.mongodb.api.MongoClient annotation) throws Exception {
-		return TestService.getInstance().provideClient(annotation.host(), annotation.port(), annotation.journaled());
+		return TestService.getInstance().provideClient(annotation.host(), annotation.port(), annotation.journaled(), annotation.lazy());
 	}
 	
 	public static MongoDbActions getInstance() {

@@ -4,13 +4,10 @@ import java.lang.reflect.Method;
 
 import org.jboss.arquillian.container.spi.event.container.AfterUnDeploy;
 import org.jboss.arquillian.container.spi.event.container.BeforeDeploy;
-import org.jboss.arquillian.container.spi.event.container.BeforeUnDeploy;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.arquillian.test.spi.event.suite.AfterClass;
 import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
 
 /**
  * MongoDbExecutor

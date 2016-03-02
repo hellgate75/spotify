@@ -36,8 +36,8 @@ public class TestService {
 		
 	}
 	
-	public MongoDbClient provideClient(String host, int port, boolean journaled) throws Exception {
-		return new MongoDbClient(host, port, journaled);
+	public MongoDbClient provideClient(String host, int port, boolean journaled, boolean lazy) throws Exception {
+		return new MongoDbClient(host, port, journaled, lazy);
 	}
 	
 	public MongoDbClient provideClient(List<ServerAddress> addresses, List<MongoCredential> credentials, boolean journaled) throws Exception {
@@ -70,7 +70,7 @@ public class TestService {
 			.cmdOptions(cmdOptions)
 			.version(Version.Main.PRODUCTION);
 			if (hostname!=null)
-				mongoBuilder = mongoBuilder.withLaunchArgument("bind_ip", hostname);
+				mongoBuilder = mongoBuilder.withLaunchArgument("--bind_ip", hostname);
 			IMongodConfig mongoConfig = mongoBuilder.build();
 
 //		logger.info("setup() - starting MongoDb embedded listener ....");
@@ -99,8 +99,10 @@ public class TestService {
 	
 	public void disconnectMongoDeamon() {
 		if (started) {
-			mongod.stop();
-			mongodExe.stop();
+			if (mongod!=null)
+				mongod.stop();
+			if (mongodExe!=null)
+				mongodExe.stop();
 			mongod = null;
 			mongodExe = null;
 			started = false;

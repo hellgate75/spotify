@@ -34,23 +34,25 @@ public class MongoDbClient {
 	private MongoClient client = null;
 	private MongoDatabase database = null;
 	private MongoCollection<Document> collection = null;
-	
+
 	public MongoDbClient() {
 		super();
 	}
-	public MongoDbClient(String host, int port, boolean journaled) throws Exception {
+	public MongoDbClient(String host, int port, boolean journaled, boolean lazy) throws Exception {
 		super();
 		this.host = host;
 		this.port = port;
 		this.journaled = journaled;
-		this.client = new MongoClient(this.host, this.port);
-		if (this.journaled)
-			this.client.setWriteConcern(WriteConcern.JOURNALED);
-		this.client.setReadPreference(ReadPreference.primary());
-		if (this.client.isLocked())
-			this.client.unlock();
+		if (!lazy) {
+			this.client = new MongoClient(this.host, this.port);
+			if (this.journaled)
+				this.client.setWriteConcern(WriteConcern.JOURNALED);
+			this.client.setReadPreference(ReadPreference.primary());
+			if (this.client.isLocked())
+				this.client.unlock();
+		}
 	}
-	
+
 	public MongoDbClient(List<ServerAddress> addresses, List<MongoCredential> credentials, boolean journaled) throws Exception {
 		super();
 		this.addresses = addresses;
@@ -63,7 +65,7 @@ public class MongoDbClient {
 		if (this.client.isLocked())
 			this.client.unlock();
 	}
-	
+
 	public void reconnect() throws Exception {
 		if (!this.isConnected()) {
 			if (addresses == null)
@@ -77,7 +79,7 @@ public class MongoDbClient {
 				this.client.unlock();
 		}
 	}
-	
+
 	public void reconnect(String host, int port, boolean journaled) throws Exception {
 		if (this.isConnected()) {
 			this.client.close();
@@ -125,11 +127,11 @@ public class MongoDbClient {
 			this.collection = null;
 		}
 	}
-	
+
 	public boolean isConnected() {
 		return client!=null;
 	}
-	
+
 	public List<String> databases() throws Exception {
 		try {
 			List<String> databaseNames = new ArrayList<String>(0);
@@ -167,7 +169,7 @@ public class MongoDbClient {
 			throw e;
 		}
 	}
-	
+
 	public MongoCollection<Document> createCollection(String collectionName) throws Exception {
 		try {
 			Document command = new Document();
@@ -178,7 +180,7 @@ public class MongoDbClient {
 		}
 		return null;
 	}
-	
+
 	public List<String> collections() throws Exception {
 		try {
 			List<String> collectionNames = new ArrayList<String>(0);
@@ -191,7 +193,7 @@ public class MongoDbClient {
 			throw e;
 		}
 	}
-	
+
 
 	public List<Document> all() throws Exception {
 		List<Document> results = new ArrayList<Document>(0);
@@ -227,11 +229,11 @@ public class MongoDbClient {
 	public void insert(Document document) throws Exception {
 		collection.insertOne(document);
 	}
-	
+
 	public void insert(List<Document> documents) throws Exception {
 		collection.insertMany(documents);
 	}
-	
+
 	public void insert(List<Document> documents, InsertManyOptions opts) throws Exception {
 		collection.insertMany(documents, opts);
 	}
@@ -265,7 +267,7 @@ public class MongoDbClient {
 			}
 		}
 	}
-	
+
 	public UpdateResult replace(Bson filter, Document replacement, UpdateOptions updateOptions) throws Exception {
 		if (updateOptions==null) {
 			return collection.replaceOne(filter, replacement);
@@ -274,20 +276,20 @@ public class MongoDbClient {
 			return collection.replaceOne(filter, replacement, updateOptions);
 		}
 	}
-	
+
 	public UpdateOptions createUpdateOption(boolean updateWhenNoMatchFound) {
 		UpdateOptions options = new UpdateOptions();
 		options.upsert(updateWhenNoMatchFound);
 		return options;
 	}
-	
+
 
 	public InsertManyOptions createInsertManyOptions(boolean isOrdered) {
 		InsertManyOptions options = new InsertManyOptions();
 		options.ordered(isOrdered);
 		return options;
 	}
-	
+
 
 	public String getHost() {
 		return host;
@@ -339,9 +341,9 @@ public class MongoDbClient {
 	public static ObjectId createObjectId() {
 		return new ObjectId(new Date(System.currentTimeMillis()));
 	}
-	
+
 	public static ObjectId convertObjectId(String id) {
 		return new ObjectId(id);
 	}
-	
+
 }

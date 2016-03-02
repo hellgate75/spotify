@@ -33,4 +33,5 @@ public @interface MongoClient {
 	public String host() default "localhost";
 	public int port() default 27017;
 	public boolean journaled() default true;
+	public boolean lazy() default true;
 }

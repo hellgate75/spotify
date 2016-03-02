@@ -1,16 +1,17 @@
 package com.services.spotify.extension.mongodb.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.bson.Document;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-
-import static org.junit.Assert.*;
 
 import com.services.spotify.extension.mongodb.api.DeployMongoDb;
 import com.services.spotify.extension.mongodb.api.MongoClient;
@@ -21,16 +22,13 @@ import com.services.spotify.extension.mongodb.runner.MongoDbRunner;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(MongoDbRunner.class)
 public class TestMongoDbRunner {
-	@MongoClient(host="localhost", port=27017) public MongoDbClient mongoClient;
+	@MongoClient(host="localhost", port=27017) public static MongoDbClient mongoClient;
 	
-	@BeforeClass
 	@DeployMongoDb(host="localhost", port=27017)
-	public static void beforeClass() {
+	@BeforeClass
+	public static void beforeClass() throws Exception {
 		System.out.println("beforeClass ....");
-	}
-
-	@Before
-	public void createMongoData() throws Exception {
+		mongoClient.reconnect();
 		System.out.println("createMongoData");
 		mongoClient.database("access");
 		mongoClient.collection("objects");
@@ -40,8 +38,7 @@ public class TestMongoDbRunner {
 			mongoClient.insert(document);
 		}
 	}
-	
-	@After
+
 	public void deleteMongoData() throws Exception {
 		System.out.println("deleteMongoData");
 		mongoClient.disconnect();
@@ -56,6 +53,7 @@ public class TestMongoDbRunner {
 	@Test
 	public void testBShouldBePresentOneUndredObjects() throws Exception {
 		System.out.println("testBShouldBePresentOneUndredObjects");
+		System.out.println("count : "+mongoClient.count());
 		assertEquals(100L, mongoClient.count());
 	}
 
@@ -72,6 +70,7 @@ public class TestMongoDbRunner {
 	@UnDeployMongoDb
 	public void testXShouldMongoDbHaveBeenClosed() throws Exception {
 		System.out.println("testCShouldBeAbleToInsertANewObject");
+		deleteMongoData();
 		assertTrue(!mongoClient.isConnected());
 	}
 

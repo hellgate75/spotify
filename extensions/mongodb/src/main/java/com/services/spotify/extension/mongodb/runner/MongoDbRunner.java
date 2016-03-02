@@ -41,13 +41,13 @@ public class MongoDbRunner extends BlockJUnit4ClassRunner {
 		}
 		for (Method m: testClass.getDeclaredMethods()) {
 			if (!testMethodList.contains(m) && m.getReturnType().getName().equals("void") && m.getTypeParameters().length==0) {
-				if (m.getAnnotation(BeforeClass.class)!=null && m.getModifiers()==Modifier.PUBLIC) {
+				if (m.getAnnotation(BeforeClass.class)!=null && m.getModifiers()==Modifier.PUBLIC+Modifier.STATIC) {
 					beforeClassMethodList.add(m);
 				}
 				else if (m.getAnnotation(AfterClass.class)!=null && m.getModifiers()==Modifier.PUBLIC+Modifier.STATIC) {
 					afterClassMethodList.add(m);
 				}
-				else if (m.getAnnotation(Before.class)!=null && m.getModifiers()==Modifier.PUBLIC+Modifier.STATIC) {
+				else if (m.getAnnotation(Before.class)!=null && m.getModifiers()==Modifier.PUBLIC) {
 					beforeMethodList.add(m);
 				}
 				else if (m.getAnnotation(After.class)!=null && m.getModifiers()==Modifier.PUBLIC) {
@@ -79,6 +79,12 @@ public class MongoDbRunner extends BlockJUnit4ClassRunner {
 
 	@Override
 	public void run(RunNotifier notifier) { 
+		try {
+			this.test =  super.createTest();
+			applyFieldAnnotations(this.test);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		for(Method method: beforeClassMethodList) {
 			executeTestAnnotations(method);
 			try {
@@ -86,12 +92,6 @@ public class MongoDbRunner extends BlockJUnit4ClassRunner {
 			} catch (Throwable e) {
 				throw new RuntimeException(e);
 			}
-		}
-		try {
-			this.test =  super.createTest();
-			applyFieldAnnotations(this.test);
-		} catch (Exception e1) {
-			e1.printStackTrace();
 		}
 		for(Method beforemethod: beforeMethodList) {
 			executeTestAnnotations(beforemethod);

@@ -23,7 +23,6 @@
 					<groupId>de.flapdoodle.embed</groupId>
 					<artifactId>de.flapdoodle.embed.mongo</artifactId>
 					<version>1.50.2</version>
-					<scope>compile</scope>
 				</dependency>
 				<!-- FlapDoodle Mongo Client (Aquillian full integration) -->
 				<dependency>
@@ -101,37 +100,9 @@
 					<groupId>org.mockito</groupId>
 					<artifactId>mockito-all</artifactId>
 				</dependency>
-				<dependency>
-					<groupId>org.testng</groupId>
-					<artifactId>testng</artifactId>
-				</dependency>
 			</dependencies>
 			<build>
-				<defaultGoal>resolve</defaultGoal>
-				<plugins>
-					<plugin>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<version>3.1</version>
-						<configuration>
-							<source>1.7</source>
-							<target>1.7</target>
-						</configuration>
-					</plugin>
-					<plugin>
-						<artifactId>maven-dependency-plugin</artifactId>
-						<executions>
-							<execution>
-								<phase>process-resources</phase>
-								<goals>
-									<goal>copy-dependencies</goal>
-								</goals>
-								<configuration>
-									<outputDirectory>${project.build.directory}/lib</outputDirectory>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
+				<defaultGoal>clean package</defaultGoal>
 			</build>
 		</profile>
 	</profiles>
