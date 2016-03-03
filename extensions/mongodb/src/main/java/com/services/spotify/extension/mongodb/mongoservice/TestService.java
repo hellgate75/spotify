@@ -85,8 +85,6 @@ public class TestService {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 			}
 		} catch (Exception e) {
@@ -103,6 +101,14 @@ public class TestService {
 				mongod.stop();
 			if (mongodExe!=null)
 				mongodExe.stop();
+			if (mongod!=null) {
+				while(mongod.isProcessRunning()) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+					}
+				}
+			}
 			mongod = null;
 			mongodExe = null;
 			started = false;
