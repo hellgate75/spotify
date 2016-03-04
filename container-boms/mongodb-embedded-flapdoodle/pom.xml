@@ -18,6 +18,16 @@
 			<version>1.50.2</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.services.spotify</groupId>
+			<artifactId>spotify-extension-mongodb-flapdoodle</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.services.spotify</groupId>
+			<artifactId>spotify-extension-mongodb-flapdoodle-annotations</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 	</dependencies>
 </project>

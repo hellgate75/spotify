@@ -13,8 +13,13 @@
 			</activation>
 			<modules>
 				<module>parent</module>
-				<module>container-boms</module>
 				<module>extensions</module>
+				<module>annotations</module>
+				<!--        Coming soon       -->
+				<!-- <module>plugins</module> -->
+				<module>container-boms</module>
+				<!--        Coming soon       -->
+				<!-- <module>examples</module> -->
 			</modules>
 		</profile>
 		<profile>

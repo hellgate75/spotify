@@ -17,3 +17,8 @@ target*.project
 *.gitignore
 *target
 .gitignore
+extensions/mongodb/.checkstyle
+extensions/mongodb/.factorypath
+.gitignore
+extensions/mongodb/.pmd
+extensions/mongodb/META-INF
