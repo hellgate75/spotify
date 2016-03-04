@@ -62,8 +62,7 @@
 	<build>
 		<defaultGoal>clean package install</defaultGoal>
  		<plugins>
- 		
-				<plugin>
+ 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>2.3.1</version>
@@ -74,17 +73,13 @@
 						<showDeprecation>false</showDeprecation>
 						<showWarnings>true</showWarnings>
 						<optimize>true</optimize>
-						<compilerVersion>1.7</compilerVersion>
+						<compilerVersion>1.6</compilerVersion>
 						<argLine>-Xmx512M</argLine>
 						<argLine>-processorpath com.services.spotify.annotations.mongo.embedded.processor</argLine>
-<!--
-						For file in different packages user below line args with class full qualified path comma separated without spaces
-  						<argLine>-processor com.services.spotify.annotations.mongo.embedded.processor.MongoDbAnnotationProcessor</argLine>
- -->
 						<showWarnings>true</showWarnings>
  					</configuration>
 				</plugin>
-<!-- 			<plugin>
+ 			<plugin>
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
 				<version>3.1.0</version>
@@ -105,7 +100,7 @@
 					</execution>
 				</executions>
 			</plugin>
- -->
+
 		</plugins>
  	</build>
 </project>
